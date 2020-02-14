@@ -1,0 +1,123 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <h1 v-once>{{ title }}</h1>
+        <h1>{{ title }}</h1>
+        <h2>{{ title }}</h2>
+        <input v-model="title" type="text" v-on:keypress.enter.space="keyWasPressed">
+        <hr>
+        <div v-on:click="divClick()">
+            <button v-on:click.stop="increaseCounter(4)">Increase</button>
+        </div>
+        <button v-on:click="changeTitle()">Say Hello</button>
+        <h2 v-html="greeting"></h2>
+        <hr>
+        <img :src="imgSrc" alt="">
+        <h1>{{ 'counter2: ' + counter2}}</h1>
+        <p>{{ counter1}}</p>
+        <h2>{{ result }}</h2>
+        <button @click="counter1++">Increase</button>
+        <button @click="counter1--">Decrease</button>
+        <button @click="counter2++">Second</button>
+        <hr>
+        <input type="text" v-model="boxWidth">
+        <input type="text" v-model="boxColor">
+        <div class="boxes">
+            <div @click="redColor = !redColor" class="box" :class="{red: redColor, green: !redColor}"></div>
+            <div class="box" :style="{width: boxWidth + 'px', backgroundColor: boxColor}"></div>
+            <div class="box"></div>
+        </div>
+        <hr>
+        <h1 v-show="studentsInClass">Hello Students</h1>
+        <div v-if="studentsInClass">
+            <h1>Students Are In Class</h1>
+        </div>
+        <div v-else>
+            <h1>Students Are Not In Class</h1>
+        </div>
+        <button @click="studentsInClass = !studentsInClass">click</button>
+
+        <div v-for="(person,e) in persons">
+            <span v-for="(value,key,i) in person">{{ i }} : {{ key }} : {{value + ' : '}}</span>
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                studentsInClass: false,
+                redColor: false,
+                boxColor: 'red',
+                imgSrc: './images/camping.jpg',
+                counter: 0,
+                counter1: 0,
+                counter2: 0,
+                title: 'Hello World',
+                greeting: '<h1>Hi There</h1>',
+                boxWidth: 100,
+                persons: [{
+                    id: 1,
+                    age: 12,
+                    name: 'Max'
+                }, {
+                    id: 2,
+                    age: 100,
+                    name: 'Joy'
+                }, {
+                    id: 3,
+                    age: 15,
+                    name: 'Fadimatu'
+                }, {
+                    id: 4,
+                    age: 17,
+                    name: 'Rene'
+                }]
+
+            },
+            methods: {
+                changeTitle: function() {
+                    this.title = 'Button Was Clicked'
+                },
+                increaseCounter: function(stepSize) {
+                    this.counter += stepSize;
+                },
+                divClick() {
+                    console.log('Div was click')
+                },
+                keyWasPressed(event) {
+                    this.title = event.target.value;
+                },
+                sumNum(a) {
+                    console.log(a)
+                    result = a + 4;
+                    console.log(result)
+                },
+
+            },
+            computed: {
+                result() {
+                    return this.counter1 > 5 ? 'Greater than 5' : 'Lesser than 5';
+                }
+            },
+            watch: {
+                counter2: function(value) {
+                    if (value > 5) {
+                        this.sumNum(value);
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
